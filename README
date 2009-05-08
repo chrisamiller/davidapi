@@ -1,0 +1,26 @@
+Author:  Chris Miller
+Contact: chrisamiller@gmail.ecom
+License: GPL 2
+
+A simple library that uses the DAVID API (http://david.abcc.ncifcrf.gov/)
+to retrieve functional annotations for a gene list. This could be expanded 
+to make use of many of the other DAVID tools, and contributions are welcomed.
+
+
+Usage is pretty simple:
+
+---------------------------
+
+require 'davidapi'
+
+#create an array of gene symbols
+geneList = ['ERBB2','TP53','MDM2']
+
+#retrieve DAVID annotations
+newHash = getFuncAnnotations(geneList)
+
+#find annotations common to all genes in your list
+common = getCommonAnnos(newHash)
+
+
+---------------------------
