@@ -193,14 +193,11 @@ def getCommonAnnos(davidHash)
   genes = davidHash.keys
 
   fieldNames.each{|field|
-    puts field
     annos = {}
     genes.each{|gene|
       davidHash[gene][field].each{|anno|
         anno = "#{anno.strip}"
-        puts "  testing #{anno}"
         if annos.key?("#{anno}")
-          puts "found"
           annos["#{anno}"] += 1
         else
           annos["#{anno}"] = 1
@@ -208,7 +205,6 @@ def getCommonAnnos(davidHash)
       }      
       annos.each{|k,v|
         #is the annotation found for every gene?
-        puts "#{k} -> #{v}"
         if v == genes.length
           commonHash[field] = [] unless commonHash.key?(field)
           commonHash[field] << k
