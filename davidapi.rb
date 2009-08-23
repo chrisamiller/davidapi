@@ -45,21 +45,21 @@ def retrieveTable(url)
 
   #get the page
   page = mech.get(url)
-
+#  page = mech.get('http://127.0.0.1/asdf.html')
   #parse out the script lines containing relevant variables
   script = []
-  page.search("script").each do |input|
-    script << input.content
-  end
+  page.search("script").each do |input|    
+    script << input.inner_html
+#    script << input.content
+  end  
 
-  script = script[0]
+  script = script[0].split(/\n/)
 
   rowids = ""
   annot = ""
   action = ""
 
   script.each{|line|
-
     if line =~ /rowids/
       rowids = line.split(/=/)[1].gsub(/\"/,"").gsub(/\;/,"")
       rowids.strip!
@@ -80,14 +80,24 @@ def retrieveTable(url)
   dform.action=action
   page2 = mech.submit(dform)
 
+
   #parse out the download link
-  link = page2.body.match(/UserDownload\/\w+.txt/)
-  raise "Table link not found" if (link.nil? || link == "")
+
+  tableLink = nil
+  page2.links.each do |link|
+    if link.href =~/(UserDownload\/\w+.txt)/
+      tableLink = $1
+    end
+  end
+
+  raise "Table link not found" if (tableLink.nil? || tableLink == "")
+
 
   link2 = 'http://david.abcc.ncifcrf.gov/'
-  link2 << "#{link}"
+  link2 << "#{tableLink}"
   puts "Table Link:"
   puts link2
+
 
   davidHash = {}
   header = []
